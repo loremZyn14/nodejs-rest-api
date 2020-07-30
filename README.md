@@ -12,7 +12,3 @@ npm install
 ```
 node afable-gerald.js
 ```
-
-
-## Let's start
-You will find the instructions in the index.js file.
