@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 const port = 3436
-const bodyParser= require('body-parser')
+const bodyParser= require('body-parser');
+const { request, response } = require('express');
 
 //
 // Requirement for set up the exercise
@@ -33,33 +34,79 @@ let recipes = [
 // Question 1 : As a manager you want to fetch all the recipes. 
 // Create a HTTP Request :
 
+app.get('/recipes',(request,response) =>{
+  response.json(recipes)
+});
+
 
 // Question 2 : As a manager you want to get only one recipe depends on his id.
 // Create a HTTP Request :
 
-
+app.get('/recipes/:recipeId',(request,response) =>{
+    let recipe = recipes.filter( recipe => {
+     return recipe.id == request.params.recipeId
+    });
+    response.json(recipe)
+});
 // Question 3 : As a manager you want to modify the selling price of only one recipe.
 // Create a HTTP Request :
 
+app.put('/recipes/:recipeId',(request,response)=>{
+  
+   let newRecipe  = recipes.filter(recipe => {
+        return recipe.id == request.params.recipeId
+    }).map(function(recipe){
+      
+        recipe.sellingPrice = request.body.sellingPrice
+        return recipe
+    });
+  response.json(newRecipe)
+});
 
 // Question 4 : As a manager you want to delete one recipe from the recipes list
 // Create a HTTP Request :
 
+app.delete('/recipes/:recipeId',(request,response) =>{
+  recipes.splice(request.params.recipeId,1);
+  response.json(recipes);
+});
+
 
 // Question 5 : As a manager you want to add a new recipe in the recipes list.
 // Create a HTTP Request :
+
+app.post('/recipes',(request,response)=>{
+  
+  recipes.push(request.body)
+  response.json(recipes);
+});
 
 
 // Question 6 : As a manager you want to get all the recipes which contains a special ingredients. 
 // For example you want to know which recipe contains cheese.
 // Create a HTTP Request :
 
+app.get('/recipes/special/ingredients',(request,response)=>{
+  let filter =  recipes.filter(recipe =>{   
+      return recipe.ingredients.includes(request.body.special)
+  });
+  response.json(filter);
+  
+});
+
 
 // Question 7 : As a manager you want to get all the recipes' name. 
 // For example he want to know which recipe contains cheese.
 // Create a HTTP Request :
 
-
+app.get('/recipes/special/ingredients/name',(request,response)=>{
+  let filter =  recipes.filter(recipe =>{  
+     return recipe.ingredients.includes(request.body.special)  
+  }).map(function(recipe){
+      return recipe.name
+  });
+  response.json(filter);
+});
 //
 // End of the exercice
 // ------------------------------
