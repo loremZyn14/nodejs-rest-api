@@ -10,7 +10,7 @@ npm install
 
 ## Run the project
 ```
-node index.js
+node afable-gerald.js
 ```
 
 
